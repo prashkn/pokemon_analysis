@@ -72,3 +72,28 @@ def choose_moves(pokemon, num_moves):
         print("Invalid amount of moves. Choose again")
         ask = get_input_checkbox("Choose " + str(num_moves) + " moves (PRESS -> ARROW TO SELECT MOVE, DO NOT CLICK ENTER): ", get_moves(pokemon))
     return ask
+
+def get_random_moves(pokemon, num_moves):
+    #all of the move names under that given pokemon
+    all_moves = [item["move"]["name"] for item in pokemon["moves"]]
+
+    move_names = set()
+    while len(move_names) != num_moves:
+        num = random.randint(0, len(all_moves) - 1)
+        move_names.add(all_moves[num])
+        all_moves.pop(num)
+
+    move_data = {}
+    for move_name in move_names:
+        move = make_call("move", move_name)
+        move_data[move_name] = move
+    
+    return move_data
+
+def get_move_data(move_names):
+    move_data = {}
+    for move_name in move_names:
+        move = make_call("move", move_name)
+        move_data[move_name] = move
+    
+    return move_data
