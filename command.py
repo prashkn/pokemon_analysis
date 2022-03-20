@@ -1,5 +1,7 @@
 import inquirer
 import random
+
+from matplotlib import animation
 from call import *
 
 #loads pokemon into dictionary
@@ -17,6 +19,16 @@ def get_input(prompt, choices_arr):
     ]
     return inquirer.prompt(questions)['query']
 
+def get_input_checkbox(prompt, choices_arr):
+    questions = [
+        inquirer.Checkbox(
+            "query",
+            message = prompt,
+            choices = choices_arr
+        ),
+    ]
+    return inquirer.prompt(questions)["query"]
+
 #get users pokemon
 def get_pokemon(data):
     names = []
@@ -26,12 +38,12 @@ def get_pokemon(data):
     ui = input("Choose your pokemon: ")
     while ui not in names:
         ui = input("Invalid pokemon. Choose your pokemon: ")
-    confirm = input("You chose " + ui + ". Confirm choice? (y/n): ")
+    confirm = input("You chose " + ui + " " + str(get_type(data[ui])) + ". Confirm choice? (y/n): ")
     while confirm != "y":
         ui = input("Choose your pokemon: ")
         while ui not in names:
             ui = input("Invalid pokemon. Choose your pokemon: ")
-        confirm = input("You chose " + ui + ". Confirm choice? (y/n): ")
+        confirm = input("You chose " + ui + " " + str(get_type(data[ui])) + ". Confirm choice? (y/n): ")
     return data[ui]
 
 def get_enemy_pokemon(data):
@@ -39,3 +51,24 @@ def get_enemy_pokemon(data):
     for pokemon in data.keys():
         if (data[pokemon]["id"] == number):
             return data[pokemon]
+
+def get_type(pokemon):
+    test = pokemon["types"]
+    types = []
+    for type_ in test:
+        types.append(type_["type"]["name"])
+    return types
+
+def get_moves(pokemon):
+    movesdata = pokemon["moves"]
+    moves = []
+    for item in movesdata:
+        moves.append(item["move"]["name"])
+    return moves
+
+def choose_moves(pokemon, num_moves):
+    ask = get_input_checkbox("Choose " + str(num_moves) + " moves (PRESS -> ARROW TO SELECT MOVE, DO NOT CLICK ENTER): ", get_moves(pokemon))
+    while len(ask) != num_moves:
+        print("Invalid amount of moves. Choose again")
+        ask = get_input_checkbox("Choose " + str(num_moves) + " moves (PRESS -> ARROW TO SELECT MOVE, DO NOT CLICK ENTER): ", get_moves(pokemon))
+    return ask
