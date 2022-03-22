@@ -43,7 +43,49 @@ while in_progress:
     #get enemy move
     m_data = random.choice(list(enemy_move_data.values()))
 
-    
+
     print("You chose " + user_move["name"] + "!")
     print(enemy_pokemon["name"] + " chose " + m_data["name"] + "!")
-    in_progress = False
+
+    if user_move["accuracy"] == None:
+        user_move["accuracy"] = -1
+    if m_data["accuracy"] == None:
+        m_data["accuracy"] = -1
+
+    user_move_hit = random.randint(0, 100) <= user_move["accuracy"]
+    enemy_move_hit = random.randint(0, 100) <= m_data["accuracy"]
+    if user_move["priority"] > m_data["priority"]:
+        if user_move["power"] == None:
+            user_move["power"] = 0
+        if m_data["power"] == None:
+            m_data["power"] = 0
+
+        move_hits, message = does_move_hit(user_move)
+        print(message)
+
+        if move_hits:
+            enemy_stats["health"] = enemy_stats["health"] - user_move["power"]
+
+        if enemy_stats["health"] > 0:
+            move_hits, message = does_move_hit(m_data)
+            print(message)
+
+            if move_hits:
+                stats["health"] = stats["health"] - m_data["power"]
+    else:
+        move_hits, message = does_move_hit(m_data)
+        print(message)
+
+        if move_hits:
+            stats["health"] = stats["health"] - m_data["power"]
+        
+        if stats["health"] > 0:
+            move_hits, message = does_move_hit(user_move)
+            print(message)
+
+            if move_hits:
+                enemy_stats["health"] = enemy_stats["health"] - user_move["power"]
+
+    in_progress = stats["health"] > 0 and enemy_stats["health"] > 0
+
+print("game over")

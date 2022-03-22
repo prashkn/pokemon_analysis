@@ -97,3 +97,9 @@ def get_move_data(move_names):
         move_data[move_name] = move
     
     return move_data
+
+def does_move_hit(move):
+    does_hit = random.randint(0, 100) <= move["accuracy"]
+    if does_hit:
+        return (True, move["name"] + " lands! It did " + str(move["power"] or '') + " damage!")
+    return (False, move["name"] + " misses.")
