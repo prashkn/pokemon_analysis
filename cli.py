@@ -1,8 +1,17 @@
 from call import *
 from command import *
-import climage
+import pickle
 
-data = load_pokemon(20)
+filename = "storage.pk"
+should_call_api = False
+
+if should_call_api:
+    data = load_pokemon(120)
+    with open(filename, 'wb') as fi:
+        pickle.dump(data, fi)
+else:
+    with open(filename, 'rb') as fi:
+        data = pickle.load(fi)
 
 print("Pokemon Battle CLI")
 
