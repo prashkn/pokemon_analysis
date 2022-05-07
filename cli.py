@@ -1,6 +1,7 @@
 from call import *
 from command import *
 import pickle
+from pprint import pprint
 
 filename = "storage.pk"
 should_call_api = False
@@ -13,7 +14,7 @@ else:
     with open(filename, 'rb') as fi:
         data = pickle.load(fi)
 
-print("Pokemon Battle CLI")
+print("\nPokemon Battle CLI\n")
 
 #get both pokemon
 user_pokemon = get_pokemon(data)
