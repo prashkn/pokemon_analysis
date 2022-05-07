@@ -1,5 +1,6 @@
 from call import *
 from command import *
+import climage
 
 data = load_pokemon(20)
 
@@ -54,12 +55,13 @@ while in_progress:
 
     user_move_hit = random.randint(0, 100) <= user_move["accuracy"]
     enemy_move_hit = random.randint(0, 100) <= m_data["accuracy"]
-    if user_move["priority"] > m_data["priority"]:
-        if user_move["power"] == None:
-            user_move["power"] = 0
-        if m_data["power"] == None:
-            m_data["power"] = 0
 
+    if user_move["power"] == None:
+        user_move["power"] = 0
+    if m_data["power"] == None:
+        m_data["power"] = 0
+    
+    if user_move["priority"] > m_data["priority"]:
         move_hits, message = does_move_hit(user_move)
         print(message)
 
