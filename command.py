@@ -1,7 +1,11 @@
 import inquirer
 import random
+import urllib.request
+from PIL import Image
+import climage
 
 from matplotlib import animation
+from numpy import unicode_
 from call import *
 
 #loads pokemon into dictionary
@@ -34,7 +38,7 @@ def get_pokemon(data):
     names = []
     for i in data.keys():
         names.append(i)
-    print(names)
+    print("Here's a list of pokemon you can choose from: " + str(names))
     ui = input("Choose your pokemon: ")
     while ui not in names:
         ui = input("Invalid pokemon. Choose your pokemon: ")
@@ -44,12 +48,16 @@ def get_pokemon(data):
         while ui not in names:
             ui = input("Invalid pokemon. Choose your pokemon: ")
         confirm = input("You chose " + ui + " " + str(get_type(data[ui])) + ". Confirm choice? (y/n): ")
+    urllib.request.urlretrieve(data[ui]["sprites"]["back_default"],"user.png")
+    print(climage.convert("user.png", width=60, is_unicode=True, is_truecolor=True, is_256color=False))
     return data[ui]
 
 def get_enemy_pokemon(data):
     number = random.randint(1, len(data) + 1)
     for pokemon in data.keys():
         if (data[pokemon]["id"] == number):
+            urllib.request.urlretrieve(data[pokemon]["sprites"]["front_default"],"enemy.png")
+            print(climage.convert("enemy.png", width=60, is_unicode=True, is_truecolor=True, is_256color=False))
             return data[pokemon]
 
 def get_type(pokemon):
