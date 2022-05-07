@@ -3,6 +3,7 @@ import random
 import urllib.request
 from PIL import Image
 import climage
+from pprint import pprint
 
 from matplotlib import animation
 from numpy import unicode_
@@ -38,7 +39,8 @@ def get_pokemon(data):
     names = []
     for i in data.keys():
         names.append(i)
-    print("Here's a list of pokemon you can choose from: " + str(names))
+    print("Here's a list of pokemon you can choose from: ")
+    pprint(names)
     ui = input("Choose your pokemon: ")
     while ui not in names:
         ui = input("Invalid pokemon. Choose your pokemon: ")
